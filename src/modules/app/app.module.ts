@@ -14,7 +14,6 @@ const libModules = [
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (cs: ConfigService) => {
-      console.log(cs.get('mysql'));
       return cs.get('mysql');
     }
   })

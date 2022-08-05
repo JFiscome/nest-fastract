@@ -21,7 +21,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       // @ts-ignore
       if (typeof errorResponse === 'object' && errorResponse.message) {
         // @ts-ignore
-        message = typeof errorResponse.message === 'string' ? errorResponse.message : errorResponse.message.join();
+        message = typeof errorResponse.message === 'string' ? errorResponse.message : errorResponse.message[0];
       } else {
         message = errorResponse;
       }
@@ -34,11 +34,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     
     const responseData = {
       statusCode: statusCode,
-      message: message,
-      time: new Date().toLocaleString()
+      message: message
     };
-    
-    console.log('响应内容：', responseData);
     
     response.status(statusCode);
     response.header('Content-Type', 'application/json; charset=utf-8');

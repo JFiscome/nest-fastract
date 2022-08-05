@@ -7,9 +7,6 @@ export class AllResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => {
-        
-        console.log('这边也会触发：', data);
-        
         return {
           statusCode: 0,
           message: 'ok',

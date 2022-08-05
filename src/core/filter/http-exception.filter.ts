@@ -7,14 +7,11 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
     const response = ctx.getResponse();
     const status = exception.getStatus();
     
-    console.log('status:::', status);
-    
     const message = exception.message || status >= 500 ? '服务端异常!' : '客户端异常!';
     
     const errorResponse = {
       code: -1,
       message: message,
-      timestamp: new Date().toLocaleString(),
       data: {}
     };
     response.status = status;
@@ -22,3 +19,8 @@ export class HttpExceptionFilter<T> implements ExceptionFilter {
     response.send(errorResponse);
   }
 }
+
+/**
+ * 该文件弃用
+ * 使用 AllExceptions.filter 代替
+ */

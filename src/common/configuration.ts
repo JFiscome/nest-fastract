@@ -11,7 +11,7 @@ const loadConfigurations = () => {
      * 表字段修改
      * 正式环境建议修改为false
      */
-    synchronize: false,
+    synchronize: true,
     autoLoadEntities: true
     // 下面这个实体用上面的autoLoadEntities取缔
     // entities: [process.env.DB_ENTITIES],

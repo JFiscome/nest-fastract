@@ -48,3 +48,11 @@ async function bootstrap() {
 bootstrap().then(r => {
   console.log('FASTRACT SERVER RUN AT localhost:3000');
 });
+
+/**
+ * 2022.08.07 周日
+ * 10号场地 19：00-22：00 3个小时
+ * 11号场地 19：00-22：00 3个小时
+ * 合计 6 个小时
+ * 场馆：羽林球馆-赤溪馆
+ */
