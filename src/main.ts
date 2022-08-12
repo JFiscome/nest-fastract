@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './core/filter/all-exceptions.filter';
 import { AllResponseInterceptor } from './core/interceptor/all-response.interceptor';
 import { ValidationPipe } from '@nestjs/common';
+import { ApiSaltGuard } from './common/guards/api-salt.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,12 @@ async function bootstrap() {
    */
   app.setGlobalPrefix('fastract');
   
+  /**
+   * 全局盐校验
+   */
+  if (process.env.NODE_ENV === 'production' || true) {
+    app.useGlobalGuards(new ApiSaltGuard());
+  }
   
   /**
    * 设置全局的校验参数过滤器
@@ -24,12 +31,10 @@ async function bootstrap() {
    */
   app.useGlobalFilters(new AllExceptionsFilter());
   
-  
   /**
    * 全局统一响应内容设置
    */
   app.useGlobalInterceptors(new AllResponseInterceptor());
-  
   
   // 自动文档生成器swagger
   const options = new DocumentBuilder()
@@ -48,11 +53,3 @@ async function bootstrap() {
 bootstrap().then(r => {
   console.log('FASTRACT SERVER RUN AT localhost:3000');
 });
-
-/**
- * 2022.08.07 周日
- * 10号场地 19：00-22：00 3个小时
- * 11号场地 19：00-22：00 3个小时
- * 合计 6 个小时
- * 场馆：羽林球馆-赤溪馆
- */

@@ -13,8 +13,8 @@ const libModules = [
   TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
-    useFactory: (cs: ConfigService) => {
-      return cs.get('mysql');
+    useFactory: (configService: ConfigService) => {
+      return configService.get('mysql');
     }
   })
 
