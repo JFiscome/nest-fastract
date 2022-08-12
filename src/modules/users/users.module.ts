@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from '../auth/auth.module';
 
 const jwtModule = JwtModule.registerAsync({
   imports: [ConfigModule],
@@ -18,10 +19,10 @@ const jwtModule = JwtModule.registerAsync({
   }
 });
 
-
 @Module({
-  imports: [jwtModule, TypeOrmModule.forFeature([User])],
+  imports: [AuthModule, jwtModule, TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService],
+  exports: [UsersService]
 })
 export class UsersModule {}

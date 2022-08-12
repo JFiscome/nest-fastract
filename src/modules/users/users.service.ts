@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,33 +22,16 @@ export class UsersService {
     return await this.userRepository.save(newUser);
   }
   
-  async userLogin({ username, password }): Promise<User> {
-    const user = await this.userRepository.findOne({
-      select: ['uid', 'role', 'password'],
-      where: { username }
-    });
-    if (!user) {
-      throw new BadRequestException('用户名错误');
-    }
-    
-    // 校验密码
-    if (!compareSync(password, user.password)) {
-      throw new BadRequestException('密码错误');
-    }
-    return user;
-  }
-  
   async generateToken(payload) {
-    console.log('this is the payload:', payload);
     return this.jwtService.sign(payload);
   }
   
   findAll() {
-    return `This action returns all users`;
+    return this.userRepository.find();
   }
   
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userRepository.findOneBy({ uid: id });
   }
   
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -17,7 +17,7 @@ async function bootstrap() {
   /**
    * 全局盐校验
    */
-  if (process.env.NODE_ENV === 'production' || true) {
+  if (process.env.NODE_ENV === 'production') {
     app.useGlobalGuards(new ApiSaltGuard());
   }
   

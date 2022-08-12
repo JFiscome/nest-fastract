@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
 import loadConfigurations from '../../common/configuration';
+import { AuthModule } from '../auth/auth.module';
 
 const libModules = [
   ConfigModule.forRoot({
@@ -22,7 +23,7 @@ const libModules = [
 
 // 业务相关的模块
 const businessModules = [
-  UsersModule
+  UsersModule, AuthModule
 ];
 
 @Module({

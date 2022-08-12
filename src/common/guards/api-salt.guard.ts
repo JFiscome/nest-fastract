@@ -1,7 +1,6 @@
 import { BadRequestException, CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Request } from 'express';
-import { ConfigService } from '@nestjs/config';
 import { md5 } from '../../utils/crypto-tool';
 
 // 路由白名单

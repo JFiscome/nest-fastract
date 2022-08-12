@@ -7,13 +7,16 @@ import {
   Param,
   Delete,
   HttpStatus,
-  UseInterceptors, ClassSerializerInterceptor
+  UseInterceptors, ClassSerializerInterceptor, UseGuards, Req
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserLoginDTO } from './dto/user-login.dot';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles, RolesPlayGuard } from '../../common/guards/roles-play.guard';
+import { EnumsUserRole } from '../../common/enums';
 
 @Controller('users')
 
@@ -33,12 +36,10 @@ export class UsersController {
   @Post('login')
   @ApiOperation({ summary: '用户登录' })
   @ApiResponse({ status: HttpStatus.OK, type: CreateUserDto })
-  async login(@Body() data: UserLoginDTO): Promise<object> {
-    const { uid, role } = await this.usersService.userLogin(data);
-    
-    // generate token
+  @UseGuards(AuthGuard('local'))
+  async login(@Req() req, @Body() data: UserLoginDTO): Promise<object> {
+    const { uid, role } = req.user;
     return { token: await this.usersService.generateToken({ uid: uid, role: role }) };
-    
   }
   
   @Get()
@@ -47,11 +48,18 @@ export class UsersController {
   }
   
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @UseGuards(AuthGuard('jwt'))
+  
+  findOne(@Param('id') id: string, @Req() req) {
+    
+    console.log('this user', req.user);
     return this.usersService.findOne(+id);
   }
   
   @Patch(':id')
+  @Roles(EnumsUserRole.admin, EnumsUserRole.manage)
+  @UseGuards(AuthGuard('jwt'), RolesPlayGuard)
+  
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
