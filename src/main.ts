@@ -5,6 +5,7 @@ import { AllExceptionsFilter } from './core/filter/all-exceptions.filter';
 import { AllResponseInterceptor } from './core/interceptor/all-response.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { ApiSaltGuard } from './common/guards/api-salt.guard';
+import { LoggerInterceptor } from './core/interceptor/logger.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,12 @@ async function bootstrap() {
   }
   
   /**
+   * 拦截器 - 日志记录
+   * 包含接口响应时间
+   */
+  app.useGlobalInterceptors(new LoggerInterceptor());
+  
+  /**
    * 设置全局的校验参数过滤器
    */
   app.useGlobalPipes(new ValidationPipe());
@@ -35,6 +42,7 @@ async function bootstrap() {
    * 全局统一响应内容设置
    */
   app.useGlobalInterceptors(new AllResponseInterceptor());
+  
   
   // 自动文档生成器swagger
   const options = new DocumentBuilder()

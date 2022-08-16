@@ -5,7 +5,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    
     // default message content
     let message: string | object = '服务端异常';
     let statusCode: number = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -26,7 +25,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message = errorResponse;
       }
     }
-    
     
     if (process.env.NODE_ENV !== 'production') {
       console.error(exception);

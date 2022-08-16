@@ -49,10 +49,7 @@ export class UsersController {
   
   @Get(':id')
   @UseGuards(AuthGuard('jwt'))
-  
   findOne(@Param('id') id: string, @Req() req) {
-    
-    console.log('this user', req.user);
     return this.usersService.findOne(+id);
   }
   
